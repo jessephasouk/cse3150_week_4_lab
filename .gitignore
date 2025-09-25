@@ -1,0 +1,9 @@
+*.py
+*.o
+*.out
+*.exe
+solution
+__pycache__
+*.pdf
+*.csv
+

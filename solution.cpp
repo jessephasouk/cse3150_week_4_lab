@@ -92,29 +92,31 @@ bool move_left(vector<vector<int>>& board) {
 		new_row = merge_row(new_row);
 		if(old_row != new_row){
 			mv = true;
+			board[i] = new_row;
 		}
-		board[i] = new_row;
 	}
 	return mv;
 }
+
 // TODO: use reverse iterators
 bool move_right(vector<vector<int>>& board){
 	bool mv = false;
 	for(int i = 0; i<4; ++i){
 		auto old_row = board[i];
 		vector<int> reversed = old_row;
+		//reverse
 		reverse(reversed.begin(), reversed.end());
 		
 		auto new_row = compress_row(reversed);
 		new_row = merge_row(new_row);
-
+		//undo reverse
 		reverse(new_row.begin(), new_row.end());
 
 		if(old_row != new_row){
 			mv = true;
+			board[i] = new_row;
 		}
-
-		board[i] = new_row;
+		
 	}
 	return mv;
 }
@@ -128,21 +130,45 @@ bool move_up(vector<vector<int>>& board){
 			col.push_back(board[r][c]);
 		}
 		auto old_col = col;
-		col = compress_row(col);
-		col = merge_row(col);
-
-		for(int r = 0; r < 4; ++r){
-			board[r][c] = col[r];
-		}
+		auto new_col = compress_row(col);
+		new_col = merge_row(new_col);
 		
-		if(old_col != col){
+		if(new_col != old_col){
 			mv = true;
+			for(int r = 0; r < 4; ++r){
+                        	board[r][c] = new_col[r];
+                	}
 		}
 	}
 	return mv;
 }
 // TODO: use column traversal with reverse
-bool move_down(vector<vector<int>>& board){return false;}
+bool move_down(vector<vector<int>>& board){
+	bool mv = false;
+	
+	for(int c = 0; c < 4; ++c){
+		vector<int> col;
+		for(int r = 0; r < 4; ++r){
+			col.push_back(board[r][c]);
+		}
+		auto old_col = col;
+		//reverse 
+		reverse(col.begin(), col.end());
+		auto new_col = compress_row(col);
+		new_col = merge_row(new_col);
+		//undo reverse
+		reverse(new_col.begin(), new_col.end());
+
+                if(new_col != old_col){
+                        mv = true;
+			for(int r = 0; r < 4; ++r){
+                        	board[r][c] = new_col[r];
+                	}
+                }
+	}
+		
+	return mv;
+}
 
 int main(){
     srand(time(nullptr));
@@ -163,6 +189,11 @@ int main(){
 
         if (cmd=='u') {
             // TODO: get the history and print the board and continue
+		if(!history.empty()){
+			board = history.top();
+			history.pop();	
+		} 
+		continue;
         }
 
         vector<vector<int>> prev = board;
@@ -174,8 +205,11 @@ int main(){
 
         if (moved) {
             // TODO: Store the previous state here!
-            spawn_tile(board);
-        }
+            	history.push(prev);
+		spawn_tile(board);
+	}
+
     }
     return 0;
+
 }

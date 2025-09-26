@@ -25,7 +25,6 @@ void write_board_csv(const vector<vector<int>>& board, bool first) {
 }
 
 void print_board(const vector<vector<int>>& board, bool first) {
-    // TODO: implement print_board here
 	for(auto& row: board){
 		for(auto value: row){
 			cout << value << "\t";
@@ -35,7 +34,7 @@ void print_board(const vector<vector<int>>& board, bool first) {
     	write_board_csv(board, first);
 }
 
-// TODO: use algorithms to spawn properly
+// spawn tile randomly
 void spawn_tile(vector<vector<int>>& board) {
 	vector<pair<int,int>> empties;
 	for (int r=0;r<4;r++){
@@ -60,7 +59,7 @@ void spawn_tile(vector<vector<int>>& board) {
 }
 
 
-// TODO: Compress a row, remove zeroes, and then pad with zeroes at the end
+// Compress a row, remove zeroes, and then pad with zeroes at the end
 std::vector<int> compress_row(const std::vector<int>& row) {
 	vector<int> compressed;
 
@@ -71,7 +70,7 @@ std::vector<int> compress_row(const std::vector<int>& row) {
 	}
 	return compressed;
 }
-// TODO: Merge a row (assumes the row is already compressed)
+// Merge a row (assumes the row is already compressed)
 std::vector<int> merge_row(std::vector<int> row) {
 	for (int i = 0; i<3; ++i){
 		if (row[i] == row[i+1] && row[i] != 0) {
@@ -83,7 +82,7 @@ std::vector<int> merge_row(std::vector<int> row) {
 	}	
 	return compress_row(row);
 }
-// TODO: use copy_if and iterators
+// move everything left
 bool move_left(vector<vector<int>>& board) {
 	bool mv = false;
 	for (int i = 0; i < 4; ++i){
@@ -98,7 +97,7 @@ bool move_left(vector<vector<int>>& board) {
 	return mv;
 }
 
-// TODO: use reverse iterators
+// move everything right
 bool move_right(vector<vector<int>>& board){
 	bool mv = false;
 	for(int i = 0; i<4; ++i){
@@ -120,7 +119,7 @@ bool move_right(vector<vector<int>>& board){
 	}
 	return mv;
 }
-// TODO: use column traversal
+// move everything up
 bool move_up(vector<vector<int>>& board){
 	bool mv = false;
 	
@@ -142,7 +141,7 @@ bool move_up(vector<vector<int>>& board){
 	}
 	return mv;
 }
-// TODO: use column traversal with reverse
+// moves eveything down
 bool move_down(vector<vector<int>>& board){
 	bool mv = false;
 	
@@ -188,7 +187,6 @@ int main(){
         if (cmd=='q') break;
 
         if (cmd=='u') {
-            // TODO: get the history and print the board and continue
 		if(!history.empty()){
 			board = history.top();
 			history.pop();	
@@ -204,7 +202,6 @@ int main(){
         else if (cmd=='s') moved=move_down(board);
 
         if (moved) {
-            // TODO: Store the previous state here!
             	history.push(prev);
 		spawn_tile(board);
 	}

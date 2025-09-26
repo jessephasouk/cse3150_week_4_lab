@@ -28,7 +28,7 @@ void print_board(const vector<vector<int>>& board, bool first) {
     // TODO: implement print_board here
 	for(auto& row: board){
 		for(auto value: row){
-			cout << value << ' ';
+			cout << value << "\t";
 		}
 		cout << "\n";
 	}
@@ -121,7 +121,25 @@ bool move_right(vector<vector<int>>& board){
 // TODO: use column traversal
 bool move_up(vector<vector<int>>& board){
 	bool mv = false;
-	return false;
+	
+	for(int c = 0; c < 4; ++c){
+		vector<int> col;
+		for(int r = 0; r < 4; ++r){
+			col.push_back(board[r][c]);
+		}
+		auto old_col = col;
+		col = compress_row(col);
+		col = merge_row(col);
+
+		for(int r = 0; r < 4; ++r){
+			board[r][c] = col[r];
+		}
+		
+		if(old_col != col){
+			mv = true;
+		}
+	}
+	return mv;
 }
 // TODO: use column traversal with reverse
 bool move_down(vector<vector<int>>& board){return false;}
